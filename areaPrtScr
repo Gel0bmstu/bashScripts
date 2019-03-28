@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# С помощью imagemagick делаем скриншот выбранной области, отдаем его в pipe
+# копируем его из pipe в буфер обмена с помощью xclip
+import png:- | xclip -selection c -t image/png
