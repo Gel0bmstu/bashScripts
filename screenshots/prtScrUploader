@@ -1,20 +1,15 @@
 #!/bin/bash
 
-# В эту переменную будет записываться адресс до скриншота
-iamge_link='https://ibb.co/';
-
 # Делаем скриншот выбранной области
 import screenshoot.png;
 # Делаем пост запрос с этой картинкой на хостинг с помощью курла, парсим ответ через jq
-# и добавляем полученный результат к переменной
-iamge_link+=`sudo curl -s \
+# и копируем полученную ссылку на скриншот в буфер обмена
+sudo curl -s \
 -F "source=@screenshoot.png" \
 -F "type=file" \
 -F "action=upload" \
 -F "action=upload" \
 -X POST \
-https://ru.imgbb.com/json | jq -r '.image' | jq -r '.id_encoded'`;
-# Копируем значение переменной в буфер обмена
-echo $iamge_link | xclip -selection clipboard;
+https://ru.imgbb.com/json | jq -r '.image' | jq -r '.url'| xclip -selection clipboard;	
 # Удаляем скриншот, который мы сделали во втором пункте
 sudo rm screenshoot.png;
