@@ -36,7 +36,10 @@ while test $# -gt 0; do
             echo " "
             echo "  -t, --ticker [TICKER] - Get quotes of current [TICKER]"
             echo "                          For example: -t YNDX will give you"
-            echo "                          quotes of Russian IT company Yndex."
+            echo "                          quotes of Russian IT company Yandex."
+            echo " "
+            echo "                          Format of quote will be like:"
+            echo "                          YNDX 2725 -3.4 -0.12"
             break
             ;;
         -t|--ticker)
