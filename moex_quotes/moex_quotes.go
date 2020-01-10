@@ -23,7 +23,12 @@ func checkResStatus(s string) bool {
 	return false
 }
 
-func makeRequest(s string, ticker string) (res *http.Response, err error) {
+func getQuote(s string, ticker string) {
+
+	var (
+		res *http.Response
+		err error
+	)
 
 	// req.Header.Add("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36")
 	body := []byte(`{"symbols":{"tickers":["MOEX:` + ticker + `"],"query":{"types":[]}},"columns":["close", "change_abs", "change"]}`)
@@ -31,8 +36,9 @@ func makeRequest(s string, ticker string) (res *http.Response, err error) {
 
 	res, err = http.Post(s, "multipart/form-data", r)
 
-	if err != nil {
+	if err != nil || checkResStatus(res.Status) {
 		// fmt.Println("Unable to make requeest: ", err)
+		fmt.Println("X")
 		return
 	}
 
@@ -42,6 +48,7 @@ func makeRequest(s string, ticker string) (res *http.Response, err error) {
 
 	if err != nil {
 		// fmt.Println("Unable to decode response body: ", err)
+		fmt.Println("E")
 		return
 	}
 
@@ -49,6 +56,7 @@ func makeRequest(s string, ticker string) (res *http.Response, err error) {
 
 	if err != nil {
 		// fmt.Println("Unable to parse response body: ", err)
+		fmt.Println("W")
 		return
 	}
 
@@ -68,10 +76,5 @@ func main() {
 
 	src := "https://scanner.tradingview.com/russia/scan"
 
-	res, err := makeRequest(src, *ticker)
-
-	if err != nil || checkResStatus(res.Status) {
-		fmt.Println("X")
-		return
-	}
+	getQuote(src, *ticker)
 }

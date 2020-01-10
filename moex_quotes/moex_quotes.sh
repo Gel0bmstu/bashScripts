@@ -2,13 +2,19 @@
 
 getQuotes () {
     goScriptPath=$(go run /home/gel0/scripts/moex_quotes.go -t $1)
+    res=$goScriptPath
 
-    if [[ $goScriptPath == "X" ]]; then
-        echo offline
+    if [[ $res == "X" ]]
+    then
+        echo "offline"
+    elif [[ $res == "W" ]]
+    then
+        echo 'wrong ticker'
+    elif [[ $res == "E" ]]
+    then
+        echo "error"
     else
-        arr=($goScriptPath)
-
-        # echo $1 | head -c1
+        arr=($res)
 
         if [[ $(echo "${arr[2]} < 0" | bc) -eq "1" ]]; then
             echo "${arr[0]}%{F#ff4d4d} ${arr[1]}  | ${arr[2]}₽ | ${arr[3]}%%{F-}"
@@ -38,7 +44,7 @@ while test $# -gt 0; do
             if test $# -gt 0; then
                 getQuotes $1
             else
-                echo "no process specified"
+                echo "Empty ticker"
                 exit 1
             fi
             shift
