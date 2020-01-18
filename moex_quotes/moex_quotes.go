@@ -62,6 +62,9 @@ func getQuote(s string, ticker string) {
 
 	strArr := strings.Split(string(val), ",")
 	strArr[0] = strArr[0][1:]
+	if len(strArr[1]) > 4 {
+		strArr[1] = strArr[1][0:4]
+	}
 	strArr[2] = strArr[2][:len(strArr[2])-7]
 
 	fmt.Println(ticker, strArr[0], strArr[1], strArr[2])
