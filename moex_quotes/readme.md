@@ -8,10 +8,10 @@ go get github.com/buger/jsonparser
 Пишет в stdout котировки компании, тикер которой был передан во флаге -t, --ticker.
 Пример: 
 ```
-./moex_quotes.sh -t YNDX
+./moex_quotes.go -t YNDX
 >> YNDX 2720 -8.4 -0.30
 
 ./moex_quotes.sh -t SBERP
->> SBERP 232.23 1.23 0.53
+>> SBERP%{F#ff4d4d} 236.43  | -2.0₽ | -0.86%%{F-}
 ```
 Цвет текста сообщения зависит от роста/падения цены на ценную бумагу компании.
