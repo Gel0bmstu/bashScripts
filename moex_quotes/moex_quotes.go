@@ -30,7 +30,6 @@ func getQuote(s string, ticker string) {
 		err error
 	)
 
-	// req.Header.Add("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.70 Safari/537.36")
 	body := []byte(`{"symbols":{"tickers":["MOEX:` + ticker + `"],"query":{"types":[]}},"columns":["close", "change_abs", "change"]}`)
 	r := bytes.NewReader(body)
 
@@ -62,10 +61,15 @@ func getQuote(s string, ticker string) {
 
 	strArr := strings.Split(string(val), ",")
 	strArr[0] = strArr[0][1:]
-	if len(strArr[1]) > 4 {
+	if len(strArr[1]) > 3 {
 		strArr[1] = strArr[1][0:4]
 	}
-	strArr[2] = strArr[2][:len(strArr[2])-7]
+
+	if len(strArr[2]) > 4 {
+		strArr[2] = strArr[2][:4]
+	} else {
+		strArr[2] = strArr[2][:len(strArr[2]) - 1]
+	}
 
 	fmt.Println(ticker, strArr[0], strArr[1], strArr[2])
 
@@ -81,3 +85,4 @@ func main() {
 
 	getQuote(src, *ticker)
 }
+
