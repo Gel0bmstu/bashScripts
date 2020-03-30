@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 getQuotes () {
     # Выполняем go скрипт, получаем строку, содержащую информацю о текущих
@@ -17,7 +17,6 @@ getQuotes () {
     then
         echo "error"
     else
-
         # Сплитим строку по пробелам, получаем массив слов
         arr=($res)
     
@@ -39,7 +38,13 @@ getQuotes () {
             fi
         else
             # Иначе выводим поледние полученные значения без цвета
-            echo "${arr[0]} ${arr[1]} | ${arr[2]}₽ | ${arr[3]}%"
+            if [[ $(echo "${arr[2]} < 0" | bc) -eq "1" ]]; then
+                echo "${arr[0]} ${arr[1]}  | ${arr[2]}₽ | ${arr[3]}%"
+            elif [[ $(echo "${arr[2]} > 0" | bc) -eq "1" ]]; then
+                echo "${arr[0]} ${arr[1]}  | ${arr[2]}₽ | ${arr[3]}%"
+            elif [[ $(echo "${arr[2]} == 0" | bc) -eq "1" ]]; then
+                echo "${arr[0]} ${arr[1]}  | ${arr[2]}₽ | ${arr[3]}%"
+            fi
         fi
     fi
 }
