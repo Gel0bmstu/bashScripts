@@ -6,8 +6,8 @@ import os
 if __name__ == "__main__":
 	args = sys.argv[1:]
 
-	print("$0: ", os.system('$0'))
-	print("$PWD: ", os.system('$PWD'))
+	print("$0: ", os.system('echo $0'))
+	print("$PWD: ", os.system('echo $PWD'))
 
 	if len(args) == 0:
 		os.system(u'git add . && git commit -m \"# some lil fixes\" && git push origin master')
