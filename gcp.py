@@ -6,8 +6,11 @@ import os
 if __name__ == "__main__":
 	args = sys.argv[1:]
 
+	print("$0: ", os.system('$0'))
+	print("$PWD: ", os.system('$PWD'))
+
 	if len(args) == 0:
-		os.system(u'git add . && git commit -m "# some lil fixes" && git push origin master')
+		os.system(u'git add . && git commit -m \"# some lil fixes\" && git push origin master')
 	elif len(args) ==1:
 		if os.path.exists(args[0]):
 			os.system(u'git add ' + args[0] + ' && git commit -m "# some lil fixes" && git push origin master')
