@@ -20,4 +20,6 @@ if __name__ == "__main__":
 	else:
 		print(u'Allowed only 3 args')
 
+	print(out)
+
 	# if out == ""
