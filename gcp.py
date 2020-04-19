@@ -7,7 +7,7 @@ if __name__ == "__main__":
 	args = sys.argv[1:]        
 
 	if len(args) == 0:
-		os.popen(u'git add . && git commit -m \"# some lil fixes\" && git push origin master').read()	
+		os.popen(u'git add . && git commit -m \"# nothing important\" && git push origin master').read()	
 	elif len(args) ==1:
 		if os.path.exists(args[0]):
 			os.system(u'git add ' + args[0] + ' && git commit -m "# some lil fixes" && git push origin master')
