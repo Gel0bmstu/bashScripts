@@ -6,6 +6,11 @@
 # import -window root screen.ps png:- | xclip -selection c -t image/png
 
 curr_date=`(date +"%d-%m-%Y_%H-%M-%S")`
-import -window root /media/d/screenshots/full/$curr_date.png &&  
+
+# Using 'import'
+# import -window root /media/d/screenshots/full/$curr_date.png &&  
+
+# Using scrot
+scrot $curr_date.png -e 'mv $f /media/d/screenshots/full/'
 cat /media/d/screenshots/full/$curr_date.png | xclip -selection c -t image/png
 

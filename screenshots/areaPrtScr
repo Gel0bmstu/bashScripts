@@ -4,6 +4,11 @@
 # копируем его из pipe в буфер обмена с помощью xclip
 # import png:- | xclip -selection c -t image/png
 curr_date=`(date +"%d-%m-%Y_%H-%M-%S")`
-import /media/d/screenshots/area/$curr_date.png &&
+
+# Using import
+# import /media/d/screenshots/area/$curr_date.png &&
+
+# Using scrot
+scrot -s -z $curr_date.png -e 'mv $f /media/d/screenshots/area/'
 cat /media/d/screenshots/area/$curr_date.png | xclip -selection c -t image/png
  

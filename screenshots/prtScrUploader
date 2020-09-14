@@ -1,15 +1,16 @@
 #!/bin/bash
 
 # Делаем скриншот выбранной области
-import screenshoot.png;
 # Делаем пост запрос с этой картинкой на хостинг с помощью курла, парсим ответ через jq
 # и копируем полученную ссылку на скриншот в буфер обмена
+
+scrot -s -z screenshoot.png &&
+
 sudo curl -s \
 -F "source=@screenshoot.png" \
 -F "type=file" \
 -F "action=upload" \
--F "action=upload" \
 -X POST \
-https://ru.imgbb.com/json | jq -r '.image' | jq -r '.url'| xclip -selection clipboard;	
-# Удаляем скриншот, который мы сделали во втором пункте
-sudo rm screenshoot.png;
+https://ru.imgbb.com/json | jq -r ".image" | jq -r ".url" | xclip -selection clipboard;
+
+sudo rm ~/screenshoot.png

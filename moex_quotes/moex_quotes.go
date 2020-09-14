@@ -30,6 +30,8 @@ func getQuote(s string, ticker string) {
 		err error
 	)
 
+	ticker = strings.ToUpper(ticker)
+
 	body := []byte(`{"symbols":{"tickers":["MOEX:` + ticker + `"],"query":{"types":[]}},"columns":["close", "change_abs", "change"]}`)
 	r := bytes.NewReader(body)
 
@@ -68,7 +70,7 @@ func getQuote(s string, ticker string) {
 	if len(strArr[2]) > 4 {
 		strArr[2] = strArr[2][:4]
 	} else {
-		strArr[2] = strArr[2][:len(strArr[2]) - 1]
+		strArr[2] = strArr[2][:len(strArr[2])-1]
 	}
 
 	fmt.Println(ticker, strArr[0], strArr[1], strArr[2])
@@ -85,4 +87,3 @@ func main() {
 
 	getQuote(src, *ticker)
 }
-
