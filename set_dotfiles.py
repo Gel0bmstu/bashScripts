@@ -25,6 +25,7 @@ def find_all_dotfiles_in_dir(path):
 
 def clone_git_repo():
     try:
+        print('Clonning dotfiles repo')
         if which('git') is None:
             check_output(['/usr/bin/sudo', get_package_manager_install(), 'git', '-y'])
 
@@ -35,12 +36,14 @@ def clone_git_repo():
             os.rename(dotfiles_dir, dotfiles_dir + '.old')    
 
         check_output(['/usr/bin/git', 'clone', 'https://github.com/Gel0bmstu/dotfiles', dotfiles_dir])
+        print('Dotfiles repo clenned sucessfully to', dotfiles_dir)
     except Exception as e:
         print('Unable to clone dotfiles repo: {}'.format(e)) 
         sys.exit(1)
 
 def set_dotfiles():
     try:
+        print('Setting dotfiles to', home_dir)
         repo_dotfiles = find_all_dotfiles_in_dir(dotfiles_dir)
 
         if os.path.exists(home_dir + '/.old'):
@@ -48,6 +51,8 @@ def set_dotfiles():
         
         os.mkdir(home_dir + '/.old')
 
+        print('Dotfiles list:', repo_dotfiles)
+        
         for f in repo_dotfiles:
             if os.path.exists(home_dir + '/' + f):
                 move(home_dir + '/' + f, home_dir + '/.old/')
