@@ -6,12 +6,19 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
+	"time"
 
 	"github.com/buger/jsonparser"
 )
 
 var errCodes = []string{"400", "404", "402", "500", "502", "505"}
+
+const (
+	DownColor = "%s%%{F#ff4d4d}%s%%{F-}"
+	UpColor   = "%s%%{F#69f56e}%s%%{F-}"
+)
 
 func checkResStatus(s string) bool {
 	for _, code := range errCodes {
@@ -61,26 +68,51 @@ func getQuote(s string, ticker string) {
 		return
 	}
 
-	strArr := strings.Split(string(val), ",")
-	strArr[0] = strArr[0][1:]
-	if len(strArr[1]) > 3 {
-		strArr[1] = strArr[1][0:4]
+	str := strings.Replace(string(val), "[", "", -1)
+	str1 := strings.Replace(str, "]", "", -1)
+	strArr := strings.Split(str1, ",")
+
+	quoteArr := []float64{}
+
+	for _, str := range strArr {
+		val, err := strconv.ParseFloat(str, 64)
+		if err != nil {
+			fmt.Println("W")
+			return
+		}
+
+		quoteArr = append(quoteArr, val)
 	}
 
-	if len(strArr[2]) > 4 {
-		strArr[2] = strArr[2][:4]
+	current_time := time.Now()
+	hours := current_time.Format("15.04")
+	hours_float, _ := strconv.ParseFloat(hours, 64)
+	weekday := current_time.Weekday()
+
+	if hours_float < 9.55 || hours_float > 19.00 || int(weekday) == 6 || int(weekday) == 7 {
+		if quoteArr[1] < 0 {
+			fmt.Println(fmt.Sprintf("%s %.2f  | %.2f₽ | %.2f%%", ticker, quoteArr[0], quoteArr[1], quoteArr[2]))
+		} else if quoteArr[1] > 0 {
+			fmt.Println(fmt.Sprintf("%s %.2f  | %.2f₽ | %.2f%%", ticker, quoteArr[0], quoteArr[1], quoteArr[2]))
+		} else {
+			fmt.Println(fmt.Sprintf("%s | %.2f  | %.2f₽ | %.2f%%", ticker, quoteArr[0], quoteArr[1], quoteArr[2]))
+		}
 	} else {
-		strArr[2] = strArr[2][:len(strArr[2])-1]
+		if quoteArr[1] < 0 {
+			fmt.Println(fmt.Sprintf(DownColor, ticker, fmt.Sprintf(" %.2f  | %.2f₽ | %.2f%%", quoteArr[0], quoteArr[1], quoteArr[2])))
+		} else if quoteArr[1] > 0 {
+			fmt.Println(fmt.Sprintf(UpColor, ticker, fmt.Sprintf(" %.2f  | %.2f₽ | %.2f%%", quoteArr[0], quoteArr[1], quoteArr[2])))
+		} else {
+			fmt.Println(fmt.Sprintf("%s | %.2f  | %.2f₽ | %.2f%%", ticker, quoteArr[0], quoteArr[1], quoteArr[2]))
+		}
 	}
-
-	fmt.Println(ticker, strArr[0], strArr[1], strArr[2])
 
 	return
 }
 
 func main() {
 
-	var ticker = flag.String("t", "TATNP", "Get quotes of current ticker")
+	ticker := flag.String("t", "TATNP", "Get quotes of current ticker")
 	flag.Parse()
 
 	src := "https://scanner.tradingview.com/russia/scan"

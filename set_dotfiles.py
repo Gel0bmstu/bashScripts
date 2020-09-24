@@ -51,7 +51,7 @@ def set_dotfiles():
         for f in repo_dotfiles:
             if os.path.exists(home_dir + '/' + f):
                 move(home_dir + '/' + f, home_dir + '/.old/')
-                os.symlink(dotfiles_dir + '/' + f, home_dir + '/' + f)
+            os.symlink(dotfiles_dir + '/' + f, home_dir + '/' + f)
     except Exception as e:
         print('Unable to set dotfiles: {}'.format(e))
         sys.exit(1)
