@@ -12,6 +12,6 @@ scd=
 # import -window root /media/d/screenshots/full/$curr_date.png &&  
 
 # Using scrot
-scrot $curr_date.png -e 'mv $f /home/gel0/screenshots/full/'
+scrot $curr_date.png -e 'mv $f /media/d/screenshots/full/'
 cat /home/gel0/screenshots/full/$curr_date.png | xclip -selection c -t image/png
 

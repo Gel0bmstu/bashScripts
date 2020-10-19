@@ -89,7 +89,7 @@ func getQuote(s string, ticker string) {
 	hours_float, _ := strconv.ParseFloat(hours, 64)
 	weekday := current_time.Weekday()
 
-	if hours_float < 9.55 || hours_float > 19.00 || int(weekday) == 6 || int(weekday) == 7 {
+	if hours_float < 9.55 || hours_float > 19.00 || int(weekday) == 6 || int(weekday) == 0 {
 		if quoteArr[1] < 0 {
 			fmt.Println(fmt.Sprintf("%s %.2f  | %.2f₽ | %.2f%%", ticker, quoteArr[0], quoteArr[1], quoteArr[2]))
 		} else if quoteArr[1] > 0 {
