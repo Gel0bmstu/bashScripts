@@ -9,5 +9,5 @@ fi
 
 echo 'Entering rosa container ...'
 
-sudo docker exec -ti -u omv rosa /bin/bash 
+sudo docker exec -ti -w /home/omv -u omv rosa /bin/bash 
 
