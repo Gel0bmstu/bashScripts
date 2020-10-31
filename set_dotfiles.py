@@ -57,6 +57,25 @@ def set_dotfiles():
             if os.path.exists(home_dir + '/' + f):
                 move(home_dir + '/' + f, home_dir + '/.old/')
             os.symlink(dotfiles_dir + '/' + f, home_dir + '/' + f)
+        
+        out = check_output('/usr/bin/grep /etc/os-release -e "NAME="')
+        os_info = out.decode('utf-8').lower()
+
+
+        with open(home_dir + '/.bashrc', 'w') as f:
+            pmgr=''
+            if 'debian' or 'ubuntu' in os_info:
+                pmgr='apt'
+            elif 'centos' or 'rosa' or 'fedora' in os_info:
+                pmgr='dnf'
+            elif 'arch' in os_info:
+                pmgr='pacman'
+
+            for line in f:
+                res = re.sub("pmgr=\'.*'", 'pmgr=\'{}'.format(pmgr), line)
+                if res != line:
+                    break
+
     except Exception as e:
         print('Unable to set dotfiles: {}'.format(e))
         sys.exit(1)

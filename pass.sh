@@ -8,17 +8,19 @@ if [[ $1 == "--type" ]]; then
 	shift
 fi
 
-prefix=${PASSWORD_STORE_DIR-/media/d/passwords}
+export PASSWORD_STORE_DIR="/media/d/passwords"
+prefix=$PASSWORD_STORE_DIR
 password_files=( "$prefix"/**/*.gpg )
 password_files=( "${password_files[@]#"$prefix"/}" )
 password_files=( "${password_files[@]%.gpg}" )
+
 
 password=$(printf '%s\n' "${password_files[@]}" | dmenu "$@")
 
 [[ -n $password ]] || exit
 
 if [[ $typeit -eq 0 ]]; then
-	pass show -c "$password" 2>/dev/null
+	pass -c "$password" > /dev/null 2>&1
 else
 	pass show "$password" | { IFS= read -r pass; printf %s "$pass"; } |
 		xdotool type --clearmodifiers --file -
