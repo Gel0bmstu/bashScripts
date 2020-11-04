@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import os
-from sys import exit
+from import exit
 from subprocess import check_output
 from shutil import which, move, rmtree
 
@@ -39,7 +39,7 @@ def clone_git_repo():
         print('Dotfiles repo clenned sucessfully to', dotfiles_dir)
     except Exception as e:
         print('Unable to clone dotfiles repo: {}'.format(e)) 
-        sys.exit(1)
+        exit(1)
 
 def set_dotfiles():
     try:
@@ -78,7 +78,7 @@ def set_dotfiles():
 
     except Exception as e:
         print('Unable to set dotfiles: {}'.format(e))
-        sys.exit(1)
+        exit(1)
 
 
 if __name__ == '__main__':
