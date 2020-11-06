@@ -73,7 +73,7 @@ def set_dotfiles():
                 pmgr='pacman'
 
             content = f.read()
-            data = re.sub("pmgr=\'.*'", 'pmgr=\'{}'.format(pmgr), content)
+            data = re.sub("pmng=\'.*\'", "pmng=\'{}\'".format(pmgr), content)
 
         with open(home_dir + '/.bashrc', 'w') as f:
             f.write(data)
