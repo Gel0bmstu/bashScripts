@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import os
-from import exit
+from sys import exit
 from subprocess import check_output
 from shutil import which, move, rmtree
 
@@ -31,7 +31,7 @@ def clone_git_repo():
 
         if os.path.exists(dotfiles_dir):
             if os.path.exists(dotfiles_dir + '.old'):
-                rmtree(dotfiles_dir + '/.old')
+                rmtree(dotfiles_dir + '.old')
 
             os.rename(dotfiles_dir, dotfiles_dir + '.old')    
 
@@ -58,11 +58,11 @@ def set_dotfiles():
                 move(home_dir + '/' + f, home_dir + '/.old/')
             os.symlink(dotfiles_dir + '/' + f, home_dir + '/' + f)
         
-        out = check_output('/usr/bin/grep /etc/os-release -e "NAME="')
+        out = check_output(['/bin/grep', '/etc/os-release', '-e', 'NAME='])
         os_info = out.decode('utf-8').lower()
 
-
-        with open(home_dir + '/.bashrc', 'w') as f:
+        data=''
+        with open(home_dir + '/.bashrc', 'r') as f:
             pmgr=''
             if 'debian' or 'ubuntu' in os_info:
                 pmgr='apt'
@@ -71,10 +71,11 @@ def set_dotfiles():
             elif 'arch' in os_info:
                 pmgr='pacman'
 
-            for line in f:
-                res = re.sub("pmgr=\'.*'", 'pmgr=\'{}'.format(pmgr), line)
-                if res != line:
-                    break
+            content = f.read()
+            data = re.sub("pmgr=\'.*'", 'pmgr=\'{}'.format(pmgr), content)
+
+        with open(home_dir + '/.bashrc', 'w') as f:
+            f.write(data)
 
     except Exception as e:
         print('Unable to set dotfiles: {}'.format(e))
