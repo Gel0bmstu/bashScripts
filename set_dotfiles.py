@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import os
+import re
 from sys import exit
 from subprocess import check_output
 from shutil import which, move, rmtree
