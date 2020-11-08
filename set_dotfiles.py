@@ -65,13 +65,11 @@ def set_dotfiles():
         data=''
         with open(home_dir + '/.bashrc', 'r') as f:
             pmgr=''
-            if 'debian' or 'ubuntu' in os_info:
+            if re.match(r'(debian|ubuntu', os_info):
                 pmgr='apt'
-            elif 'centos' or 'rosa' or 'fedora' in os_info:
+            elif re.match(r'(centos|rosa|fedora', os_info):
                 pmgr='dnf'
-            elif 'arch' in os_info:
-                pmgr='pacman'
-
+                
             content = f.read()
             data = re.sub("pmng=\'.*\'", "pmng=\'{}\'".format(pmgr), content)
 
