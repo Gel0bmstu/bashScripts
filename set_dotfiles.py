@@ -9,14 +9,6 @@ from shutil import which, move, rmtree
 home_dir = os.environ.get('HOME')
 dotfiles_dir = home_dir + '/dotfiles'
 
-def get_package_manager_install():
-    if which('dnf') is not None:
-        return 'dnf install'
-    elif which('apt') is not None:
-        return 'apt isntall'
-    elif which('pacman') is not None:
-        return 'pacman -Syu'
-
 def find_all_dotfiles_in_dir(path):
     return [f for f in os.listdir(path) if f[0] == '.' \
         and f != '.' \
@@ -64,10 +56,10 @@ def set_dotfiles():
 
         data=''
         with open(home_dir + '/.bashrc', 'r') as f:
-            pmgr=''
-            if re.match(r'(debian|ubuntu', os_info):
+            pmgr='dnf'
+            if re.match(r'(debian|ubuntu)', os_info):
                 pmgr='apt'
-            elif re.match(r'(centos|rosa|fedora', os_info):
+            elif re.match(r'(centos|rosa|fedora)', os_info):
                 pmgr='dnf'
                 
             content = f.read()
