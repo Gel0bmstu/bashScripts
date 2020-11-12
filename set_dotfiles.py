@@ -8,6 +8,17 @@ from shutil import which, move, rmtree
 
 home_dir = os.environ.get('HOME')
 dotfiles_dir = home_dir + '/dotfiles'
+packet_manager = ''
+
+def get_package_manager_install():
+    if which('dnf') is not None:
+        return 'dnf'
+    elif which('dnf') is not None:
+        return 'yum'
+    elif which('apt') is not None:
+        return 'apt'
+    elif which('pacman') is not None:
+        return 'pacman'
 
 def find_all_dotfiles_in_dir(path):
     return [f for f in os.listdir(path) if f[0] == '.' \
@@ -18,10 +29,14 @@ def find_all_dotfiles_in_dir(path):
 
 def clone_git_repo():
     try:
+        packet_manager = get_package_manager_install()
         print('Clonning dotfiles repo')
         if which('git') is None:
-            check_output(['/usr/bin/sudo', get_package_manager_install(), 'git', '-y'])
-
+            if packet_manager != 'pacman':
+                check_output(['/usr/bin/sudo', packet_manager, 'install', 'git', '-y'])
+            else:
+                check_output(['/usr/bin/sudo', packet_manager, '-Syu', 'git', '-y'])
+                
         if os.path.exists(dotfiles_dir):
             if os.path.exists(dotfiles_dir + '.old'):
                 rmtree(dotfiles_dir + '.old')
@@ -49,21 +64,12 @@ def set_dotfiles():
         for f in repo_dotfiles:
             if os.path.exists(home_dir + '/' + f):
                 move(home_dir + '/' + f, home_dir + '/.old/')
-            os.symlink(dotfiles_dir + '/' + f, home_dir + '/' + f)
-        
-        out = check_output(['/bin/grep', '/etc/os-release', '-e', 'NAME='])
-        os_info = out.decode('utf-8').lower()
+            os.symlink(dotfiles_dir + '/' + f, home_dir + '/' + )
 
         data=''
         with open(home_dir + '/.bashrc', 'r') as f:
-            pmgr='dnf'
-            if re.match(r'(debian|ubuntu)', os_info):
-                pmgr='apt'
-            elif re.match(r'(centos|rosa|fedora)', os_info):
-                pmgr='dnf'
-                
             content = f.read()
-            data = re.sub("pmng=\'.*\'", "pmng=\'{}\'".format(pmgr), content)
+            data = re.sub("pmng=\*$", "pmng=\'{}\'".format(packat_manager), content)
 
         with open(home_dir + '/.bashrc', 'w') as f:
             f.write(data)
