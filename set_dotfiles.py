@@ -64,12 +64,12 @@ def set_dotfiles():
         for f in repo_dotfiles:
             if os.path.exists(home_dir + '/' + f):
                 move(home_dir + '/' + f, home_dir + '/.old/')
-            os.symlink(dotfiles_dir + '/' + f, home_dir + '/' + )
+            os.symlink(dotfiles_dir + '/' + f, home_dir + '/' + f)
 
         data=''
         with open(home_dir + '/.bashrc', 'r') as f:
             content = f.read()
-            data = re.sub("pmng=\*$", "pmng=\'{}\'".format(packat_manager), content)
+            data = re.sub("pmng=\*$", "pmng=\'{}\'".format(packet_manager), content)
 
         with open(home_dir + '/.bashrc', 'w') as f:
             f.write(data)
