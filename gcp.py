@@ -22,7 +22,7 @@ if __name__ == "__main__":
 			subprocess.check_output(['git', 'push', 'origin', 'master'])
 		elif len(args) == 1:
 			if os.path.exists(args[0]):
-				subprocess.check_output('git add {file} && git commit -m "# update {file}" && git push origin master'.format(file=args[0]).split())
+				subprocess.check_output("git add {file} && git commit -m \"# update \" && git push origin master".format(file=args[0]).split())
 			else:
 				subprocess.check_output("git commit -am \"{}\" && git push origin master".format(args[0]))		
 		elif len(args) == 2:
