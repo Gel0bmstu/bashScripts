@@ -2,10 +2,17 @@
 
 import os
 import re
+import argparse
 from sys import exit
-from subprocess import check_output
+from subprocess import check_output, call
 from shutil import which, move, rmtree
 
+parser = argparse.ArgumentParser(description='Process some integers.')
+parser.add_argument('-r', type=bool, help='set dotfiles to root dir')
+args = parser.parse_args()
+
+set_root = args.r
+root_dir = '/root'
 home_dir = os.environ.get('HOME')
 dotfiles_dir = home_dir + '/dotfiles'
 packet_manager = ''
@@ -51,6 +58,7 @@ def clone_git_repo():
 
 def set_dotfiles():
     try:
+        # Setting dotfiles for regular user
         print('Setting dotfiles to', home_dir)
         repo_dotfiles = find_all_dotfiles_in_dir(dotfiles_dir)
 
@@ -73,6 +81,19 @@ def set_dotfiles():
 
         with open(home_dir + '/.bashrc', 'w') as f:
             f.write(data)
+        
+
+        # linking system root users dotfiles to regular user
+        if home_dir != '/root' and set_root:
+            check_output(['/usr/bin/sudo', 'rm', '-rf', root_dir + '/.old'])
+            check_output(['/usr/bin/sudo', 'mkdir', root_dir + '/.old'])
+
+            for f in repo_dotfiles:
+                call(['/usr/bin/sudo', 'mv', '/root/' + f, '/root/.old/'], \
+                    stdout=open(os.devnull, 'wb'),\
+                    stderr=open(os.devnull, 'wb'))
+                check_output(['/usr/bin/sudo', 'ln', '-s', dotfiles_dir + '/' + f, '/root/' + f])
+
 
     except Exception as e:
         print('Unable to set dotfiles: {}'.format(e))
