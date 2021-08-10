@@ -4,7 +4,7 @@
 # Делаем пост запрос с этой картинкой на хостинг с помощью курла, парсим ответ через jq
 # и копируем полученную ссылку на скриншот в буфер обмена
 
-scrot -s -z screenshoot.png &&
+import /home/gel0/screenshoot.png &&
 
 sudo curl -s \
 -F "source=@screenshoot.png" \
