@@ -11,13 +11,14 @@ extract () {
     for arg in $@ ; do
         if [ -f $arg ] ; then
             case $arg in
-                *.tar.bz2)  tar xjf $arg      ;;
-                *.tar.gz)   tar xzf $arg      ;;
+                *.tar.xz)   tar xvf $arg      ;;
+                *.tar.bz2)  tar xvjf $arg      ;;
+                *.tar.gz)   tar xvzf $arg      ;;
                 *.bz2)      bunzip2 $arg      ;;
                 *.gz)       gunzip $arg       ;;
-                *.tar)      tar xf $arg       ;;
-                *.tbz2)     tar xjf $arg      ;;
-                *.tgz)      tar xzf $arg      ;;
+                *.tar)      tar xvf $arg       ;;
+                *.tbz2)     tar xvjf $arg      ;;
+                *.tgz)      tar xvzf $arg      ;;
                 *.zip)      unzip $arg        ;;
                 *.Z)        uncompress $arg   ;;
                 *.rar)      rar x $arg        ;;  # 'rar' must to be installed
